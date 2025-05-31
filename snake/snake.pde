@@ -1,35 +1,31 @@
+ArrayList<ParteSerpente> serpente;
+ParteSerpente testa;
+
+Mela mela;
+
 int meleMangiate;
 int scalaX,scalaY;
 int direzione;
 
-class ParteSerpente{
-  int x,y;
-  
-  ParteSerpente(int x, int y){
-    this.x=x;
-    this.y=y;
-  }
-}
-ArrayList<ParteSerpente> serpente = new ArrayList<ParteSerpente>();
-ParteSerpente testa = new ParteSerpente(20,20);
-
-class Mela{
-  int x,y;
-  boolean mangiata;
-}
-Mela mela = new Mela();
-
 void setup(){
   size(640,656);
-  scalaX=width/40;
-  scalaY=width/41;
   frameRate(10);
+  surface.setResizable(true);  // rende la finestra ridimensionabile
+
+  serpente = new ArrayList<ParteSerpente>();
+  testa = new ParteSerpente(20,20);
+  mela = new Mela();
+
   direzione=0;
+
   generaMela();
 }
 
 void draw(){
   update();
+  
+  scalaX=width/40;
+  scalaY=width/41;
   
   background(0);
   
@@ -49,7 +45,7 @@ void draw(){
   
   //punteggio
   textSize(scalaY);
-  text("Punteggio: "+meleMangiate,16,16);
+  text("Punteggio: " + meleMangiate,16,16);
 }
 
 void update(){
@@ -57,12 +53,20 @@ void update(){
   spostaSerpente();
   
   //controlla bordi
-  if(testa.x>=40||testa.x<0||testa.y>40||testa.y<0){
+  if (testa.x >= 40 || testa.x < 0 || testa.y > 40 || testa.y < 0){
     morte();
+  }
+
+  //controllo coda
+  for(ParteSerpente coda : serpente){
+    if(testa.x==coda.x&&testa.y=coda.x){
+      morte();
+      break;
+    }
   }
   
   //controllo mela
-  if(mela.mangiata){
+  if (mela.mangiata) {
     meleMangiate++;
     generaMela();
     //serpente.add();
@@ -71,15 +75,15 @@ void update(){
 
 void generaMela(){
   do{
-    mela.x=(int) random(40);
-    mela.y=(int) random(40);
+    mela.x = (int) random(40);
+    mela.y = (int) random(40);
     mela.mangiata=false;
   }while(controlloGenerazioneMela());
 }
 
 boolean controlloGenerazioneMela(){
   for(ParteSerpente parte : serpente){
-    if(parte.x==mela.x&&parte.y==mela.y){
+    if (parte.x == mela.x && parte.y == mela.y){
       return true;
     }
   }
@@ -89,43 +93,45 @@ boolean controlloGenerazioneMela(){
 void spostaSerpente(){
   switch(direzione) {
     case 0:
-      testa.y-=1;
+      testa.y -= 1;
       break;
     case 1:
-      testa.y+=1;
+      testa.y += 1;
       break;
     case 2:
-      testa.x+=1;
+      testa.x += 1;
       break;
     case 3:
-      testa.x-=1;
+      testa.x -= 1;
       break;
+    default:
+      break;	
   }
 }
 
 void morte(){
-
+  direzione=-1;
 }
 
-void keyPressed(){
-  switch(keyCode){
+void keyPressed() {
+  switch (keyCode) {
     case 'W':
-      if(direzione!=1){
+      if (direzione!=1) {
         direzione=0;
       }
       break;
     case 'A':
-      if(direzione!=2){
+      if (direzione!=2) {
         direzione=3;
       }
       break;
     case 'S':
-      if(direzione!=0){
+      if (direzione!=0) {
         direzione=1;
       }
       break;
     case 'D':
-      if(direzione!=3){
+      if (direzione!=3) {
         direzione=2;
       }
       break;
