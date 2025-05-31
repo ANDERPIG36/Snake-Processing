@@ -20,8 +20,8 @@ class Mela{
 Mela mela = new Mela();
 
 void setup(){
-  size(640,640);
-  scalaX=width/41;
+  size(640,656);
+  scalaX=width/40;
   scalaY=width/41;
   frameRate(10);
   direzione=0;
@@ -56,6 +56,11 @@ void update(){
   
   spostaSerpente();
   
+  //controlla bordi
+  if(testa.x>=40||testa.x<0||testa.y>40||testa.y<0){
+    morte();
+  }
+  
   //controllo mela
   if(mela.mangiata){
     meleMangiate++;
@@ -82,7 +87,24 @@ boolean controlloGenerazioneMela(){
 }
 
 void spostaSerpente(){
-  
+  switch(direzione) {
+    case 0:
+      testa.y-=1;
+      break;
+    case 1:
+      testa.y+=1;
+      break;
+    case 2:
+      testa.x+=1;
+      break;
+    case 3:
+      testa.x-=1;
+      break;
+  }
+}
+
+void morte(){
+
 }
 
 void keyPressed(){
@@ -93,18 +115,18 @@ void keyPressed(){
       }
       break;
     case 'A':
+      if(direzione!=2){
+        direzione=3;
+      }
+      break;
+    case 'S':
       if(direzione!=0){
         direzione=1;
       }
       break;
-    case 'S':
+    case 'D':
       if(direzione!=3){
         direzione=2;
-      }
-      break;
-    case 'D':
-      if(direzione!=2){
-        direzione=3;
       }
       break;
   }
