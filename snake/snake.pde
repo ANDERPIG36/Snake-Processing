@@ -1,5 +1,6 @@
 int meleMangiate;
 int scalaX,scalaY;
+int direzione;
 
 class ParteSerpente{
   int x,y;
@@ -23,6 +24,7 @@ void setup(){
   scalaX=width/41;
   scalaY=width/41;
   frameRate(10);
+  direzione=0;
   generaMela();
 }
 
@@ -86,25 +88,24 @@ void spostaSerpente(){
 void keyPressed(){
   switch(keyCode){
     case 'W':
+      if(direzione!=1){
+        direzione=0;
+      }
       break;
     case 'A':
+      if(direzione!=0){
+        direzione=1;
+      }
       break;
     case 'S':
+      if(direzione!=3){
+        direzione=2;
+      }
       break;
     case 'D':
-      break;
-  }
-}
-
-void keyReleased(){
-  switch(keyCode){
-    case 'W':
-      break;
-    case 'A':
-      break;
-    case 'S':
-      break;
-    case 'D':
+      if(direzione!=2){
+        direzione=3;
+      }
       break;
   }
 }
