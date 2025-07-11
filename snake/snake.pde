@@ -59,14 +59,14 @@ void update(){
 
   //controllo coda
   for(ParteSerpente coda : serpente){
-    if(testa.x==coda.x&&testa.y=coda.x){
+    if(testa.x==coda.x&&testa.y==coda.x){
       morte();
       break;
     }
   }
   
   //controllo mela
-  if (mela.mangiata) {
+  if (mela.x == testa.x && mela.y == testa.y) {
     meleMangiate++;
     generaMela();
     //serpente.add();
@@ -77,7 +77,6 @@ void generaMela(){
   do{
     mela.x = (int) random(40);
     mela.y = (int) random(40);
-    mela.mangiata=false;
   }while(controlloGenerazioneMela());
 }
 
