@@ -10,7 +10,6 @@ int direzione;
 void setup(){
   size(640,656);
   frameRate(10);
-  surface.setResizable(true);  // rende la finestra ridimensionabile
 
   serpente = new ArrayList<ParteSerpente>();
   testa = new ParteSerpente(20,20);
@@ -25,7 +24,7 @@ void draw(){
   update();
   
   scalaX=width/40;
-  scalaY=width/41;
+  scalaY=width/40;
   
   background(0);
   
@@ -44,8 +43,7 @@ void draw(){
   rect(mela.x*scalaX,mela.y*scalaY,scalaX,scalaY);
   
   //punteggio
-  textSize(scalaY);
-  text("Punteggio: " + meleMangiate,16,16);
+  surface.setTitle("Punteggio: " + meleMangiate);
 }
 
 void update(){
@@ -69,7 +67,7 @@ void update(){
   if (mela.x == testa.x && mela.y == testa.y) {
     meleMangiate++;
     generaMela();
-    //serpente.add();
+    aggiungiParteSerpente();
   }
 }
 
@@ -89,7 +87,19 @@ boolean controlloGenerazioneMela(){
   return false;
 }
 
+void aggiungiParteSerpente(){
+  if (serpente.size() > 0) {
+    ParteSerpente ultimo = serpente.get(serpente.size() - 1);
+    serpente.add(new ParteSerpente(ultimo.x, ultimo.y));
+  }
+  else {
+    serpente.add(new ParteSerpente(testa.x, testa.y));
+  }
+}
+
 void spostaSerpente(){
+  
+  //sposta testa
   switch(direzione) {
     case 0:
       testa.y -= 1;
@@ -113,26 +123,28 @@ void morte(){
 }
 
 void keyPressed() {
-  switch (keyCode) {
-    case 'W':
-      if (direzione!=1) {
-        direzione=0;
-      }
-      break;
-    case 'A':
-      if (direzione!=2) {
-        direzione=3;
-      }
-      break;
-    case 'S':
-      if (direzione!=0) {
-        direzione=1;
-      }
-      break;
-    case 'D':
-      if (direzione!=3) {
-        direzione=2;
-      }
-      break;
+  if(direzione != -1){
+    switch (keyCode) {
+      case 'W':
+        if (direzione!=1) {
+          direzione=0;
+        }
+        break;
+      case 'A':
+        if (direzione!=2) {
+          direzione=3;
+        }
+        break;
+      case 'S':
+        if (direzione!=0) {
+          direzione=1;
+        }
+        break;
+      case 'D':
+        if (direzione!=3) {
+          direzione=2;
+        }
+        break;
+    }
   }
 }
