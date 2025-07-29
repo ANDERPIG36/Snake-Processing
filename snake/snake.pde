@@ -82,7 +82,7 @@ void update(){
     generaMela();
     aggiungiParteSerpente();
   }
-}
+} 
 
 void generaMela(){
   do{
@@ -151,21 +151,25 @@ void keyPressed() {
   if(direzione != -1){
     switch (keyCode) {
       case 'W':
+      case UP:
         if (direzione!=1) {
           direzione=0;
         }
         break;
       case 'A':
+      case LEFT:
         if (direzione!=2) {
           direzione=3;
         }
         break;
       case 'S':
+      case DOWN:
         if (direzione!=0) {
           direzione=1;
         }
         break;
       case 'D':
+      case RIGHT:
         if (direzione!=3) {
           direzione=2;
         }
