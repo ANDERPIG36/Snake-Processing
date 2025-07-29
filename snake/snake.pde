@@ -27,21 +27,33 @@ void draw(){
   scalaY=width/40;
   
   background(0);
-  
-  //testa
-  fill(0,255,0);
-  rect(testa.x*scalaX,testa.y*scalaY,scalaX,scalaY);
-  
-  //corpo
-  fill(0,240,0);
-  for (ParteSerpente parte : serpente){
-    rect(parte.x*scalaX,parte.y*scalaY,scalaX,scalaY);
+    
+  if(direzione != -1){
+    //testa
+    fill(0,255,0);
+    rect(testa.x*scalaX,testa.y*scalaY,scalaX,scalaY);
+    
+    //corpo
+    fill(0,130,0);
+    for (ParteSerpente parte : serpente){
+      rect(parte.x*scalaX,parte.y*scalaY,scalaX,scalaY);
+    }
+    
+    //mela
+    fill(255,0,0);
+    rect(mela.x*scalaX,mela.y*scalaY,scalaX,scalaY);
   }
-  
-  //mela
-  fill(255,0,0);
-  rect(mela.x*scalaX,mela.y*scalaY,scalaX,scalaY);
-  
+  else{
+    if((millis()/500)%2==0){
+      fill(255,0,0);
+    }
+    else{
+      fill(255);
+    }
+    textSize(width/10);
+    text("SEI MORTO",width/2-scalaX*10,height/2+scalaY*2);
+  }
+    
   //punteggio
   surface.setTitle("Punteggio: " + meleMangiate);
 }
@@ -56,8 +68,9 @@ void update(){
   }
 
   //controllo coda
-  for(ParteSerpente coda : serpente){
-    if(testa.x==coda.x&&testa.y==coda.x){
+  for (int i = 1; i < serpente.size(); i++) {
+    ParteSerpente coda = serpente.get(i);
+    if (testa.x == coda.x && testa.y == coda.y) {
       morte();
       break;
     }
@@ -88,16 +101,26 @@ boolean controlloGenerazioneMela(){
 }
 
 void aggiungiParteSerpente(){
-  if (serpente.size() > 0) {
-    ParteSerpente ultimo = serpente.get(serpente.size() - 1);
+  if(serpente.size()>0) {
+    ParteSerpente ultimo = serpente.get(serpente.size()-1);
     serpente.add(new ParteSerpente(ultimo.x, ultimo.y));
   }
-  else {
+  else{
     serpente.add(new ParteSerpente(testa.x, testa.y));
   }
 }
 
 void spostaSerpente(){
+  
+  //sposta corpo
+  if (serpente.size()>0 && direzione!=-1) {
+    for(int i=serpente.size()-1; i>0; i--) {
+      serpente.get(i).x = serpente.get(i-1).x;
+      serpente.get(i).y = serpente.get(i-1).y;
+    }
+    serpente.get(0).x = testa.x;
+    serpente.get(0).y = testa.y;
+  }
   
   //sposta testa
   switch(direzione) {
@@ -116,6 +139,8 @@ void spostaSerpente(){
     default:
       break;	
   }
+  
+  
 }
 
 void morte(){
